@@ -219,9 +219,9 @@ Pinned version in `.tool-versions`:
 elixir 1.19.5-otp-28
 ```
 
-The `-otp-28` suffix is the OTP version that asdf/CI use for that Elixir build. You do not need a separate `erlang` plugin.
+The `-otp-28` suffix is the OTP version that asdf uses for that Elixir build. You do not need a separate `erlang` plugin.
 
-CI reads the same file via `erlef/setup-beam` and additionally tests OTP 26.2.5 as the minimum supported version.
+CI installs the same stack explicitly (`OTP 28.1` + `Elixir 1.19.5`) and additionally tests OTP 26.2.5 as the minimum supported version.
 
 ### Running Tests
 ```bash

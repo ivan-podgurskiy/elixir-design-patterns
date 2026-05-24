@@ -18,24 +18,16 @@ jobs:
       matrix:
         include:
           - name: Elixir 1.19.5 / OTP 28.1
-            setup: version-file
+            otp: "28.1"
+            elixir: "1.19.5"
           - name: Elixir 1.19.5 / OTP 26.2.5
-            setup: min-otp
             otp: "26.2.5"
             elixir: "1.19.5"
     steps:
       - name: Check out code
         uses: actions/checkout@v4
 
-      - name: Set up BEAM (from .tool-versions)
-        if: matrix.setup == 'version-file'
-        uses: erlef/setup-beam@v1
-        with:
-          version-file: .tool-versions
-          version-type: strict
-
-      - name: Set up BEAM (minimum OTP)
-        if: matrix.setup == 'min-otp'
+      - name: Set up BEAM
         uses: erlef/setup-beam@v1
         with:
           otp-version: ${{ matrix.otp }}
@@ -74,7 +66,8 @@ jobs:
       - name: Set up BEAM
         uses: erlef/setup-beam@v1
         with:
-          version-file: .tool-versions
+          otp-version: "28.1"
+          elixir-version: "1.19.5"
           version-type: strict
 
       - name: Restore dependencies cache
