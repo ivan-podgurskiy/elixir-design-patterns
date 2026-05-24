@@ -4,8 +4,8 @@
 > Each pattern is a self-contained module with tests, docs, and a real-world use case.
 
 [![CI](https://github.com/ivan-podgurskiy/elixir-design-patterns/actions/workflows/ci.yml/badge.svg)](https://github.com/ivan-podgurskiy/elixir-design-patterns/actions)
-[![Elixir Version](https://img.shields.io/badge/elixir-1.14+-blue.svg)](https://elixir-lang.org/)
-[![OTP Version](https://img.shields.io/badge/otp-25+-blue.svg)](https://www.erlang.org/)
+[![Elixir Version](https://img.shields.io/badge/elixir-1.19+-blue.svg)](https://elixir-lang.org/)
+[![OTP Version](https://img.shields.io/badge/otp-26+-blue.svg)](https://www.erlang.org/)
 
 ## Overview
 
@@ -199,8 +199,29 @@ Each pattern builds on concepts from the previous ones.
 ## Development
 
 ### Prerequisites
-- Elixir 1.14+ with OTP 25+
-- Understanding of basic Elixir/OTP concepts
+- Elixir 1.19+ with OTP 26+
+- [asdf](https://asdf-vm.com/) (recommended)
+
+### Local setup with asdf
+
+Only the Elixir plugin is required — the OTP version is encoded in the release tag:
+
+```bash
+asdf plugin add elixir
+asdf install   # reads .tool-versions → 1.19.5-otp-28
+mix deps.get
+mix test
+```
+
+Pinned version in `.tool-versions`:
+
+```
+elixir 1.19.5-otp-28
+```
+
+The `-otp-28` suffix is the OTP version that asdf/CI use for that Elixir build. You do not need a separate `erlang` plugin.
+
+CI reads the same file via `erlef/setup-beam` and additionally tests OTP 26.2.5 as the minimum supported version.
 
 ### Running Tests
 ```bash
