@@ -37,6 +37,21 @@ defmodule Patterns.SupervisorTree do
   end
 
   @doc """
+  Starts an unlinked supervisor for testing or embedding in existing trees.
+  """
+  @spec start(strategy()) :: Supervisor.on_start()
+  def start(strategy) do
+    case Supervisor.start_link(__MODULE__, strategy) do
+      {:ok, pid} = result ->
+        Process.unlink(pid)
+        result
+
+      error ->
+        error
+    end
+  end
+
+  @doc """
   Adds a dynamic child to the running supervisor.
   """
   @spec add_child(pid(), child_type(), term()) :: Supervisor.on_start_child()
@@ -117,6 +132,8 @@ defmodule Patterns.SupervisorTree do
 
   @impl Supervisor
   def init(strategy) do
+    :persistent_term.put({__MODULE__, self()}, strategy)
+
     children = [
       build_child_spec(:worker, :worker_1),
       build_child_spec(:worker, :worker_2),
@@ -163,12 +180,10 @@ defmodule Patterns.SupervisorTree do
   end
 
   defp get_strategy(supervisor) do
-    case :supervisor.get_childspec(supervisor, :supervisor) do
-      {:ok, {_, {_, _, _, opts}}} -> Keyword.get(opts, :strategy, :one_for_one)
+    case :persistent_term.get({__MODULE__, supervisor}, :unknown) do
+      strategy when strategy in [:one_for_one, :one_for_all, :rest_for_one] -> strategy
       _ -> :unknown
     end
-  catch
-    :exit, _ -> :one_for_one
   end
 end
 
@@ -176,6 +191,8 @@ defmodule DemoWorker do
   @moduledoc """
   A simple GenServer worker for demonstration purposes.
   """
+
+  @dialyzer {:nowarn_function, handle_cast: 2}
 
   use GenServer
 
@@ -231,6 +248,8 @@ defmodule FailingWorker do
   @moduledoc """
   A worker that fails immediately on startup for testing supervision strategies.
   """
+
+  @dialyzer {:nowarn_function, handle_info: 2}
 
   use GenServer
 

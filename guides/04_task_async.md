@@ -35,15 +35,14 @@ The Task.async pattern enables concurrent and parallel execution in Elixir. Task
 ```elixir
 # Start async task
 task = Task.async(fn ->
-  # Some expensive operation
-  HTTPoison.get("https://api.example.com/data")
+  Patterns.TaskAsync.parallel_fetch(["http://httpbin.org/delay/1"])
 end)
 
 # Do other work...
 other_result = local_computation()
 
 # Get the async result
-{:ok, response} = Task.await(task, 5000)
+{:ok, [response]} = Task.await(task, 5000)
 ```
 
 ### 2. Parallel Execution
@@ -76,6 +75,20 @@ fastest_result = Task.async_stream([
 
 ### Parallel HTTP Fetching
 
+This repository ships `Patterns.TaskAsync.parallel_fetch/2`, which simulates HTTP latency
+for demo and test purposes. URLs containing `/delay/N` sleep for N seconds before returning.
+
+```elixir
+{:ok, results} =
+  Patterns.TaskAsync.parallel_fetch(
+    ["http://httpbin.org/delay/1", "http://httpbin.org/delay/2"],
+    timeout: 5000,
+    http_timeout: 3000
+  )
+```
+
+In production, swap the simulated fetch for a real HTTP client (for example, `:req` or `HTTPoison`):
+
 ```elixir
 def parallel_fetch(urls, opts \\ []) do
   timeout = Keyword.get(opts, :timeout, 5000)
@@ -85,14 +98,13 @@ def parallel_fetch(urls, opts \\ []) do
     |> Enum.with_index()
     |> Enum.map(fn {url, index} ->
       Task.async(fn ->
-        case HTTPoison.get(url, [], timeout: timeout) do
+        case Req.get(url, receive_timeout: timeout) do
           {:ok, response} -> {index, {:ok, response.body}}
           {:error, reason} -> {index, {:error, reason}}
         end
       end)
     end)
 
-  # Await all tasks and sort by original order
   Task.await_many(tasks, timeout)
   |> Enum.sort_by(fn {index, _} -> index end)
   |> Enum.map(fn {_, result} -> result end)

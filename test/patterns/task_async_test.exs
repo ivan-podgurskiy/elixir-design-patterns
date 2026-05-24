@@ -326,6 +326,19 @@ defmodule Patterns.TaskAsyncTest do
     end
   end
 
+  describe "supervised_task/2" do
+    test "returns successful results without crashing the caller" do
+      {:ok, 42} = TaskAsync.supervised_task(fn -> 42 end)
+    end
+
+    test "isolates task failures from the caller" do
+      {:error, _reason} =
+        TaskAsync.supervised_task(fn ->
+          raise "isolated failure"
+        end)
+    end
+  end
+
   describe "integration scenarios" do
     test "complex async workflow" do
       # Simulate a complex workflow with multiple async operations

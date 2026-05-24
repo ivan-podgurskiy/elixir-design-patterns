@@ -1,18 +1,19 @@
 defmodule ElixirDesignPatterns do
   @moduledoc """
-  Documentation for `ElixirDesignPatterns`.
+  Practical, runnable examples of OTP and functional design patterns in Elixir.
+
+  See the pattern modules under `Patterns.*` and the guides in `guides/`.
   """
 
   @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> ElixirDesignPatterns.hello()
-      :world
-
+  Returns the Phase 1 pattern modules included in this library.
   """
-  def hello do
-    :world
+  def patterns do
+    [
+      Patterns.GenServerCache,
+      Patterns.SupervisorTree,
+      Patterns.AgentState,
+      Patterns.TaskAsync
+    ]
   end
 end

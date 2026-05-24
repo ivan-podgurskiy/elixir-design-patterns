@@ -12,7 +12,7 @@ defmodule ElixirDesignPatterns.MixProject do
       # Documentation
       name: "Elixir Design Patterns",
       description: "Practical, runnable examples of OTP and functional design patterns in Elixir",
-      source_url: "https://github.com/yourusername/elixir-design-patterns",
+      source_url: "https://github.com/ivan-podgurskiy/elixir-design-patterns",
       docs: [
         main: "readme",
         extras: ["README.md", "CHANGELOG.md"] ++ Path.wildcard("guides/*.md")
@@ -20,9 +20,9 @@ defmodule ElixirDesignPatterns.MixProject do
 
       # Package
       package: [
-        maintainers: ["Your Name"],
+        maintainers: ["Ivan Podgurskiy"],
         licenses: ["MIT"],
-        links: %{"GitHub" => "https://github.com/yourusername/elixir-design-patterns"}
+        links: %{"GitHub" => "https://github.com/ivan-podgurskiy/elixir-design-patterns"}
       ],
 
       # Testing and analysis
@@ -42,7 +42,8 @@ defmodule ElixirDesignPatterns.MixProject do
 
   def application do
     [
-      extra_applications: [:logger]
+      extra_applications: [:logger],
+      mod: {ElixirDesignPatterns.Application, []}
     ]
   end
 

@@ -4,7 +4,7 @@ defmodule Patterns.SupervisorTreeTest do
 
   describe "supervisor initialization" do
     test "starts with one_for_one strategy" do
-      {:ok, sup} = SupervisorTree.start_link(:one_for_one)
+      {:ok, sup} = SupervisorTree.start(:one_for_one)
 
       info = SupervisorTree.info(sup)
       assert info.strategy == :one_for_one
@@ -16,7 +16,7 @@ defmodule Patterns.SupervisorTreeTest do
     end
 
     test "starts with one_for_all strategy" do
-      {:ok, sup} = SupervisorTree.start_link(:one_for_all)
+      {:ok, sup} = SupervisorTree.start(:one_for_all)
 
       info = SupervisorTree.info(sup)
       assert info.strategy == :one_for_all
@@ -26,7 +26,7 @@ defmodule Patterns.SupervisorTreeTest do
     end
 
     test "starts with rest_for_one strategy" do
-      {:ok, sup} = SupervisorTree.start_link(:rest_for_one)
+      {:ok, sup} = SupervisorTree.start(:rest_for_one)
 
       info = SupervisorTree.info(sup)
       assert info.strategy == :rest_for_one
@@ -38,8 +38,8 @@ defmodule Patterns.SupervisorTreeTest do
 
   describe "child management" do
     setup do
-      {:ok, sup} = SupervisorTree.start_link(:one_for_one)
-      on_exit(fn -> Supervisor.stop(sup) end)
+      {:ok, sup} = SupervisorTree.start(:one_for_one)
+      on_exit(fn -> stop_supervisor(sup) end)
       {:ok, supervisor: sup}
     end
 
@@ -86,8 +86,8 @@ defmodule Patterns.SupervisorTreeTest do
 
   describe "worker interaction" do
     setup do
-      {:ok, sup} = SupervisorTree.start_link(:one_for_one)
-      on_exit(fn -> Supervisor.stop(sup) end)
+      {:ok, sup} = SupervisorTree.start(:one_for_one)
+      on_exit(fn -> stop_supervisor(sup) end)
       {:ok, supervisor: sup}
     end
 
@@ -105,8 +105,8 @@ defmodule Patterns.SupervisorTreeTest do
 
   describe "supervision strategies" do
     test "one_for_one: only crashed child restarts" do
-      {:ok, sup} = SupervisorTree.start_link(:one_for_one)
-      on_exit(fn -> Supervisor.stop(sup) end)
+      {:ok, sup} = SupervisorTree.start(:one_for_one)
+      on_exit(fn -> stop_supervisor(sup) end)
 
       # Get initial PIDs
       initial_info = SupervisorTree.info(sup)
@@ -134,8 +134,8 @@ defmodule Patterns.SupervisorTreeTest do
     end
 
     test "one_for_all: all children restart when one fails" do
-      {:ok, sup} = SupervisorTree.start_link(:one_for_all)
-      on_exit(fn -> Supervisor.stop(sup) end)
+      {:ok, sup} = SupervisorTree.start(:one_for_all)
+      on_exit(fn -> stop_supervisor(sup) end)
 
       # Get initial PIDs
       initial_info = SupervisorTree.info(sup)
@@ -158,13 +158,13 @@ defmodule Patterns.SupervisorTreeTest do
       # worker_2 also restarted
       assert worker_2_pid != new_worker_2_pid
 
-      # All children should still be running
-      assert updated_info.running_count == 3
+      # Permanent workers restart; temporary worker is not restarted under one_for_all
+      assert updated_info.running_count == 2
     end
 
     test "temporary worker is not restarted" do
-      {:ok, sup} = SupervisorTree.start_link(:one_for_one)
-      on_exit(fn -> Supervisor.stop(sup) end)
+      {:ok, sup} = SupervisorTree.start(:one_for_one)
+      on_exit(fn -> stop_supervisor(sup) end)
 
       # Get initial info - temp_worker should be running
       initial_info = SupervisorTree.info(sup)
@@ -184,14 +184,14 @@ defmodule Patterns.SupervisorTreeTest do
       assert updated_info.running_count == 2
 
       temp_worker_after = Enum.find(updated_info.children, &(&1.id == :temp_worker))
-      refute temp_worker_after || temp_worker_after.alive?
+      assert is_nil(temp_worker_after) || not temp_worker_after.alive?
     end
   end
 
   describe "supervisor introspection" do
     test "provides detailed information about children" do
-      {:ok, sup} = SupervisorTree.start_link(:one_for_one)
-      on_exit(fn -> Supervisor.stop(sup) end)
+      {:ok, sup} = SupervisorTree.start(:one_for_one)
+      on_exit(fn -> stop_supervisor(sup) end)
 
       info = SupervisorTree.info(sup)
 
@@ -227,7 +227,7 @@ defmodule Patterns.SupervisorTreeTest do
     test "supervisor shuts down after exceeding restart limits" do
       # This test demonstrates that the supervisor will shut down if
       # restart limits are exceeded. We use a FailingWorker for this.
-      {:ok, sup} = SupervisorTree.start_link(:one_for_one)
+      {:ok, sup} = SupervisorTree.start(:one_for_one)
 
       # Add a failing worker that will continuously crash
       {:ok, _pid} = SupervisorTree.add_child(sup, :failing_worker, :failing_1)
@@ -250,6 +250,16 @@ defmodule Patterns.SupervisorTreeTest do
   end
 
   # Helper functions
+
+  defp stop_supervisor(sup) do
+    if Process.alive?(sup) do
+      try do
+        Supervisor.stop(sup, :normal, 5000)
+      catch
+        :exit, _ -> :ok
+      end
+    end
+  end
 
   defp get_worker_pid(children, worker_id) do
     case Enum.find(children, &(&1.id == worker_id)) do

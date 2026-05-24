@@ -27,9 +27,12 @@ defmodule Patterns.TaskAsync do
   @default_timeout 5000
   @default_http_timeout 3000
 
+  @task_supervisor __MODULE__.TaskSupervisor
+
   @doc """
   Fetches multiple URLs in parallel using Task.async/await.
 
+  URLs containing `/delay/N` simulate N-second response times for testing.
   Returns results in the same order as the input URLs.
   Individual failures don't stop other requests.
   """
@@ -130,12 +133,15 @@ defmodule Patterns.TaskAsync do
     timeout = Keyword.get(opts, :timeout, @default_timeout)
     fallback_value = Keyword.get(opts, :fallback, nil)
 
-    tasks = Enum.map(functions, &Task.async/1)
+    tasks = Enum.map(functions, &async_safe/1)
 
     Enum.map(tasks, fn task ->
       try do
-        result = Task.await(task, timeout)
-        {:ok, result}
+        case Task.await(task, timeout) do
+          {:ok, result} -> {:ok, result}
+          {:task_error, exception} -> {:error, exception}
+          {:task_exit, reason} -> {:error, reason}
+        end
       catch
         :exit, {:timeout, _} ->
           Task.shutdown(task, :brutal_kill)
@@ -150,7 +156,7 @@ defmodule Patterns.TaskAsync do
   @doc """
   Retry a task with exponential backoff.
   """
-  @spec retry((-> term()), keyword()) :: task_result()
+  @spec retry((-> term()), keyword()) :: {:ok, term()} | {:error, Exception.t()}
   def retry(fun, opts \\ []) do
     max_attempts = Keyword.get(opts, :max_attempts, 3)
     base_delay = Keyword.get(opts, :base_delay, 100)
@@ -163,18 +169,19 @@ defmodule Patterns.TaskAsync do
   @doc """
   Supervised task execution that won't crash the caller.
   """
-  @spec supervised_task((-> term()), keyword()) :: task_result()
+  @spec supervised_task((-> term()), keyword()) ::
+          {:ok, term()} | {:error, term()} | {:timeout, :supervised_task_timeout}
   def supervised_task(fun, opts \\ []) do
     timeout = Keyword.get(opts, :timeout, @default_timeout)
 
-    task = Task.Supervisor.async_nolink(TaskSupervisor, fun)
+    task = Task.Supervisor.async_nolink(@task_supervisor, fun)
 
     try do
       result = Task.await(task, timeout)
       {:ok, result}
     catch
       :exit, {:timeout, _} ->
-        Task.Supervisor.terminate_child(TaskSupervisor, task.pid)
+        Task.Supervisor.terminate_child(@task_supervisor, task.pid)
         {:timeout, :supervised_task_timeout}
 
       :exit, reason ->
@@ -189,30 +196,35 @@ defmodule Patterns.TaskAsync do
   def pipeline(functions, opts \\ []) do
     timeout = Keyword.get(opts, :timeout, @default_timeout)
 
-    try do
-      Enum.reduce(functions, nil, fn fun, acc ->
-        task =
-          Task.async(fn ->
-            if acc == nil do
-              fun.()
-            else
-              fun.(acc)
-            end
-          end)
+    functions
+    |> Enum.reduce_while({:ok, nil}, fn fun, {:ok, acc} ->
+      task =
+        Task.async(fn ->
+          try do
+            if acc == nil, do: fun.(), else: fun.(acc)
+          rescue
+            e -> {:pipeline_error, e}
+          end
+        end)
 
-        Task.await(task, timeout)
-      end)
-      |> then(&{:ok, &1})
-    rescue
-      e ->
-        {:error, e}
-    catch
-      :exit, {:timeout, _} ->
-        {:timeout, :pipeline_timeout}
+      case Task.await(task, timeout) do
+        {:pipeline_error, exception} ->
+          {:halt, {:error, exception}}
 
-      :exit, reason ->
-        {:error, reason}
+        result ->
+          {:cont, {:ok, result}}
+      end
+    end)
+    |> case do
+      {:ok, result} -> {:ok, result}
+      {:error, _} = error -> error
     end
+  catch
+    :exit, {:timeout, _} ->
+      {:timeout, :pipeline_timeout}
+
+    :exit, reason ->
+      {:error, reason}
   end
 
   # Private Functions
@@ -222,9 +234,8 @@ defmodule Patterns.TaskAsync do
   defp fetch_single_url(url, http_timeout, index) do
     result =
       try do
-        # Simulate HTTP request with configurable delay
         delay = extract_delay_from_url(url)
-        Process.sleep(delay)
+        Process.sleep(min(delay, http_timeout))
 
         if delay > http_timeout do
           {:error, :timeout}
@@ -257,8 +268,7 @@ defmodule Patterns.TaskAsync do
           pos_integer(),
           boolean(),
           pos_integer()
-        ) ::
-          task_result()
+        ) :: {:ok, term()} | {:error, term()}
   defp do_retry(fun, max_attempts, base_delay, max_delay, jitter, attempt) do
     result = fun.()
     {:ok, result}
@@ -344,8 +354,32 @@ defmodule Patterns.TaskAsync do
     end
 
     # Simulate different data sources
-    defp simulate_db_query, do: Process.sleep(100) && "db_data"
-    defp simulate_cache_lookup, do: Process.sleep(10) && "cache_data"
-    defp simulate_api_call, do: Process.sleep(200) && "api_data"
+    defp simulate_db_query do
+      Process.sleep(100)
+      "db_data"
+    end
+
+    defp simulate_cache_lookup do
+      Process.sleep(10)
+      "cache_data"
+    end
+
+    defp simulate_api_call do
+      Process.sleep(200)
+      "api_data"
+    end
+  end
+
+  @spec async_safe((-> term())) :: Task.t()
+  defp async_safe(fun) do
+    Task.async(fn ->
+      try do
+        {:ok, fun.()}
+      rescue
+        e -> {:task_error, e}
+      catch
+        :exit, reason -> {:task_exit, reason}
+      end
+    end)
   end
 end

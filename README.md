@@ -3,7 +3,7 @@
 > Practical, runnable examples of OTP and functional design patterns in Elixir.
 > Each pattern is a self-contained module with tests, docs, and a real-world use case.
 
-[![CI](https://github.com/yourusername/elixir-design-patterns/workflows/CI/badge.svg)](https://github.com/yourusername/elixir-design-patterns/actions)
+[![CI](https://github.com/ivan-podgurskiy/elixir-design-patterns/actions/workflows/ci.yml/badge.svg)](https://github.com/ivan-podgurskiy/elixir-design-patterns/actions)
 [![Elixir Version](https://img.shields.io/badge/elixir-1.14+-blue.svg)](https://elixir-lang.org/)
 [![OTP Version](https://img.shields.io/badge/otp-25+-blue.svg)](https://www.erlang.org/)
 
@@ -20,7 +20,7 @@ This repository demonstrates deep Elixir/OTP expertise through comprehensive, ru
 ## Quick Start
 
 ```bash
-git clone https://github.com/yourusername/elixir-design-patterns.git
+git clone https://github.com/ivan-podgurskiy/elixir-design-patterns.git
 cd elixir-design-patterns
 mix deps.get
 mix test
@@ -101,11 +101,11 @@ mix docs                   # Generate documentation
 ```
 
 ### Quality Metrics
-- **100% Test Coverage**: Every pattern has comprehensive tests
-- **Full Type Coverage**: All functions have `@spec` annotations
+- **Comprehensive Tests**: 80+ tests covering happy paths, edge cases, and error scenarios
+- **High Type Coverage**: Public APIs include `@spec` annotations
 - **Zero Credo Issues**: Strict code quality enforcement
-- **Zero Dialyzer Warnings**: Static analysis passing
-- **Comprehensive Docs**: Every module has detailed documentation
+- **Dialyzer Clean**: Static analysis passing
+- **Detailed Docs**: Every pattern module has documentation and a companion guide
 
 ## Usage Examples
 
@@ -139,8 +139,8 @@ info = Patterns.SupervisorTree.info(sup)
 
 ### Parallel Processing
 ```elixir
-# Fetch multiple URLs concurrently
-urls = ["https://api.github.com/users/octocat", "https://httpbin.org/ip"]
+# Fetch multiple URLs concurrently (simulated I/O for demo/testing)
+urls = ["http://httpbin.org/delay/1", "http://httpbin.org/ip"]
 {:ok, responses} = Patterns.TaskAsync.parallel_fetch(urls, timeout: 5000)
 
 # Process data in parallel
@@ -155,7 +155,8 @@ end, max_concurrency: 8)
 
 # Time operations
 result = Patterns.AgentState.Statistics.time(stats, :api_call, fn ->
-  HTTPoison.get("https://api.example.com/data")
+  Process.sleep(10)
+  :ok
 end)
 
 # Get metrics
@@ -240,7 +241,7 @@ This is primarily a demonstration repository, but improvements are welcome:
 ## Project Status
 
 - ✅ **Phase 1 Complete**: Core OTP patterns with full documentation
-- 🚧 **Phase 2 In Progress**: Advanced process patterns
+- 📋 **Phase 2 Planned**: Advanced process patterns
 - 📋 **Phase 3 Planned**: Functional programming patterns
 - 📋 **Phase 4 Planned**: Real-world production patterns
 
