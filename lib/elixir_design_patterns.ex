@@ -6,14 +6,15 @@ defmodule ElixirDesignPatterns do
   """
 
   @doc """
-  Returns the Phase 1 pattern modules included in this library.
+  Returns the pattern modules included in this library.
   """
   def patterns do
     [
       Patterns.GenServerCache,
       Patterns.SupervisorTree,
       Patterns.AgentState,
-      Patterns.TaskAsync
+      Patterns.TaskAsync,
+      Patterns.RegistryDynamicSupervisor
     ]
   end
 end

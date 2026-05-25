@@ -49,10 +49,15 @@ iex -S mix
 | **Agent State** | [`Patterns.AgentState`](lib/patterns/agent_state.ex) | Simple shared state for counters, config, and statistics | [📖 Guide](guides/03_agent_state.md) |
 | **Task.async** | [`Patterns.TaskAsync`](lib/patterns/task_async.ex) | Parallel execution, timeout handling, and result aggregation | [📖 Guide](guides/04_task_async.md) |
 
+### Phase 2 — Process Patterns
+
+| Pattern | Module | Description | Guide |
+|---------|--------|-------------|--------|
+| **Registry & Dynamic Supervisors** | [`Patterns.RegistryDynamicSupervisor`](lib/patterns/registry_dynamic_supervisor.ex) | Runtime keyed process lookup, on-demand startup, and crash recovery | [📖 Guide](guides/05_registry_dynamic_supervisor.md) |
+
 ### Coming Soon — Additional Phases
 
-**Phase 2 — Process Patterns**
-- Registry & Dynamic Supervisors
+**Phase 2 — Process Patterns (continued)**
 - Pub/Sub with Registry
 - Process Pooling
 - Circuit Breaker
@@ -77,6 +82,7 @@ iex -S mix
 
 ### 🚦 **Process Supervision**
 - **Supervisor Tree**: Fault tolerance with configurable restart strategies
+- **Registry & Dynamic Supervisors**: On-demand keyed process management
 - **Task.async**: Concurrent execution with proper error handling
 
 ### ⚡ **Concurrency & Performance**
@@ -262,7 +268,7 @@ This is primarily a demonstration repository, but improvements are welcome:
 ## Project Status
 
 - ✅ **Phase 1 Complete**: Core OTP patterns with full documentation
-- 📋 **Phase 2 Planned**: Advanced process patterns
+- 🚧 **Phase 2 In Progress**: Registry & Dynamic Supervisors complete; Pub/Sub, pooling, and circuit breaker planned
 - 📋 **Phase 3 Planned**: Functional programming patterns
 - 📋 **Phase 4 Planned**: Real-world production patterns
 
@@ -278,6 +284,7 @@ This is primarily a demonstration repository, but improvements are welcome:
 - [Supervisor Tree Guide](guides/02_supervisor_tree.md)
 - [Agent State Guide](guides/03_agent_state.md)
 - [Task.async Guide](guides/04_task_async.md)
+- [Registry & Dynamic Supervisors Guide](guides/05_registry_dynamic_supervisor.md)
 
 ---
 

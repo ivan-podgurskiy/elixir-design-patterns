@@ -53,8 +53,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Planned - Phase 2: Process Patterns
-- Registry & Dynamic Supervisors for runtime process management
+### Added - Phase 2: Process Patterns (Part 1)
+
+#### Registry & Dynamic Supervisors Pattern
+- Registry-backed unique key to pid lookup
+- DynamicSupervisor for on-demand worker lifecycle
+- Idempotent `start_worker/2` and keyed `call/4` / `cast/3` APIs
+- Worker crash recovery with automatic re-registration
+- Introspection via `info/1` and `list_workers/1`
+- Comprehensive test suite and detailed guide
+
+### Planned - Phase 2: Process Patterns (continued)
 - Pub/Sub system using Registry for event distribution
 - Process pooling implementation (mini-Poolboy)
 - Circuit breaker pattern for external service resilience
