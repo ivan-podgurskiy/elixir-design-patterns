@@ -63,8 +63,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Introspection via `info/1` and `list_workers/1`
 - Comprehensive test suite and detailed guide
 
+### Added - Phase 2: Process Patterns (Part 2)
+
+#### Pub/Sub with Registry Pattern
+- Duplicate-key Registry for multi-subscriber topics
+- Topic subscribe/unsubscribe and fan-out publish via `Registry.dispatch/3`
+- Subscriber helper GenServer for demos and testing
+- Topic and subscriber introspection via `info/1` and `topics/1`
+- Automatic unregistration when subscribers exit
+- Comprehensive test suite and detailed guide
+
 ### Planned - Phase 2: Process Patterns (continued)
-- Pub/Sub system using Registry for event distribution
 - Process pooling implementation (mini-Poolboy)
 - Circuit breaker pattern for external service resilience
 

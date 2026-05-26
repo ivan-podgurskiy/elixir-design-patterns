@@ -14,7 +14,8 @@ defmodule ElixirDesignPatterns do
       Patterns.SupervisorTree,
       Patterns.AgentState,
       Patterns.TaskAsync,
-      Patterns.RegistryDynamicSupervisor
+      Patterns.RegistryDynamicSupervisor,
+      Patterns.RegistryPubSub
     ]
   end
 end
