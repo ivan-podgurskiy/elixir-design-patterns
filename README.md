@@ -55,11 +55,11 @@ iex -S mix
 |---------|--------|-------------|--------|
 | **Registry & Dynamic Supervisors** | [`Patterns.RegistryDynamicSupervisor`](lib/patterns/registry_dynamic_supervisor.ex) | Runtime keyed process lookup, on-demand startup, and crash recovery | [📖 Guide](guides/05_registry_dynamic_supervisor.md) |
 | **Pub/Sub with Registry** | [`Patterns.RegistryPubSub`](lib/patterns/registry_pub_sub.ex) | Topic-based event fan-out with duplicate-key Registry dispatch | [📖 Guide](guides/06_registry_pub_sub.md) |
+| **Process Pooling** | [`Patterns.ProcessPool`](lib/patterns/process_pool.ex) | Fixed-size interchangeable worker pools with checkout/checkin | [📖 Guide](guides/07_process_pool.md) |
 
 ### Coming Soon — Additional Phases
 
 **Phase 2 — Process Patterns (continued)**
-- Process Pooling
 - Circuit Breaker
 
 **Phase 3 — Functional Patterns**
@@ -84,6 +84,7 @@ iex -S mix
 - **Supervisor Tree**: Fault tolerance with configurable restart strategies
 - **Registry & Dynamic Supervisors**: On-demand keyed process management
 - **Pub/Sub with Registry**: Topic-based in-process event distribution
+- **Process Pooling**: Bounded concurrency with worker checkout/checkin
 - **Task.async**: Concurrent execution with proper error handling
 
 ### ⚡ **Concurrency & Performance**
@@ -269,7 +270,7 @@ This is primarily a demonstration repository, but improvements are welcome:
 ## Project Status
 
 - ✅ **Phase 1 Complete**: Core OTP patterns with full documentation
-- 🚧 **Phase 2 In Progress**: Registry & Dynamic Supervisors and Pub/Sub complete; pooling and circuit breaker planned
+- 🚧 **Phase 2 In Progress**: Registry, Pub/Sub, and Process Pool complete; circuit breaker planned
 - 📋 **Phase 3 Planned**: Functional programming patterns
 - 📋 **Phase 4 Planned**: Real-world production patterns
 
@@ -287,6 +288,7 @@ This is primarily a demonstration repository, but improvements are welcome:
 - [Task.async Guide](guides/04_task_async.md)
 - [Registry & Dynamic Supervisors Guide](guides/05_registry_dynamic_supervisor.md)
 - [Pub/Sub with Registry Guide](guides/06_registry_pub_sub.md)
+- [Process Pooling Guide](guides/07_process_pool.md)
 
 ---
 

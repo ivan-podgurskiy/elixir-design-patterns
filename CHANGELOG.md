@@ -73,8 +73,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Automatic unregistration when subscribers exit
 - Comprehensive test suite and detailed guide
 
+### Added - Phase 2: Process Patterns (Part 3)
+
+#### Process Pooling Pattern
+- Fixed-size pre-warmed worker pool with FIFO waiting queue
+- Checkout/checkin and transaction APIs with timeout support
+- Interchangeable worker job processing
+- Automatic worker replacement on crash
+- Pool utilization introspection via `info/1`
+- Comprehensive test suite and detailed guide
+
 ### Planned - Phase 2: Process Patterns (continued)
-- Process pooling implementation (mini-Poolboy)
 - Circuit breaker pattern for external service resilience
 
 ### Planned - Phase 3: Functional Patterns
