@@ -317,7 +317,7 @@ defmodule Patterns.ProcessPool.Pool do
 
   defp fulfill_waiting(state) do
     case :queue.out(state.waiting) do
-          {{:value, {from, _ref, timer}}, waiting} ->
+      {{:value, {from, _ref, timer}}, waiting} ->
         case :queue.out(state.available) do
           {{:value, worker}, available} ->
             Process.cancel_timer(timer)
@@ -356,10 +356,10 @@ defmodule Patterns.ProcessPool.Pool do
 
   defp create_workers(size) do
     workers =
-    for id <- 1..size do
-      {:ok, worker} = Worker.start(id)
-      worker
-    end
+      for id <- 1..size do
+        {:ok, worker} = Worker.start(id)
+        worker
+      end
 
     meta =
       Map.new(workers, fn worker ->
