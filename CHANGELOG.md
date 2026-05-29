@@ -83,8 +83,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Pool utilization introspection via `info/1`
 - Comprehensive test suite and detailed guide
 
-### Planned - Phase 2: Process Patterns (continued)
-- Circuit breaker pattern for external service resilience
+### Added - Phase 2: Process Patterns (Part 4)
+
+#### Circuit Breaker Pattern
+- Three-state machine: closed, open, and half-open
+- Failure-threshold tripping and fail-fast rejection when open
+- Probationary half-open recovery with configurable success threshold
+- Isolated call execution capturing exceptions, exits, and timeouts as failures
+- Configurable failure predicate, reset timeout, and call timeout
+- Manual `trip/1` and `reset/1` controls plus `state/1` and `stats/1` introspection
+- Comprehensive test suite and detailed guide
 
 ### Planned - Phase 3: Functional Patterns
 - Pipeline processing with `with` statement chains

@@ -16,7 +16,8 @@ defmodule ElixirDesignPatterns do
       Patterns.TaskAsync,
       Patterns.RegistryDynamicSupervisor,
       Patterns.RegistryPubSub,
-      Patterns.ProcessPool
+      Patterns.ProcessPool,
+      Patterns.CircuitBreaker
     ]
   end
 end

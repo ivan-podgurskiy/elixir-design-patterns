@@ -56,11 +56,9 @@ iex -S mix
 | **Registry & Dynamic Supervisors** | [`Patterns.RegistryDynamicSupervisor`](lib/patterns/registry_dynamic_supervisor.ex) | Runtime keyed process lookup, on-demand startup, and crash recovery | [📖 Guide](guides/05_registry_dynamic_supervisor.md) |
 | **Pub/Sub with Registry** | [`Patterns.RegistryPubSub`](lib/patterns/registry_pub_sub.ex) | Topic-based event fan-out with duplicate-key Registry dispatch | [📖 Guide](guides/06_registry_pub_sub.md) |
 | **Process Pooling** | [`Patterns.ProcessPool`](lib/patterns/process_pool.ex) | Fixed-size interchangeable worker pools with checkout/checkin | [📖 Guide](guides/07_process_pool.md) |
+| **Circuit Breaker** | [`Patterns.CircuitBreaker`](lib/patterns/circuit_breaker.ex) | Fail-fast protection for unreliable services with automatic recovery | [📖 Guide](guides/08_circuit_breaker.md) |
 
 ### Coming Soon — Additional Phases
-
-**Phase 2 — Process Patterns (continued)**
-- Circuit Breaker
 
 **Phase 3 — Functional Patterns**
 - Pipeline with `with` chains
@@ -94,6 +92,7 @@ iex -S mix
 ### 🛡️ **Fault Tolerance**
 - **Supervisor Tree**: "Let it crash" philosophy in practice
 - **GenServer Cache**: Graceful degradation and recovery
+- **Circuit Breaker**: Fail-fast protection against failing dependencies
 
 ## Code Quality
 
@@ -270,7 +269,7 @@ This is primarily a demonstration repository, but improvements are welcome:
 ## Project Status
 
 - ✅ **Phase 1 Complete**: Core OTP patterns with full documentation
-- 🚧 **Phase 2 In Progress**: Registry, Pub/Sub, and Process Pool complete; circuit breaker planned
+- ✅ **Phase 2 Complete**: Registry & Dynamic Supervisors, Pub/Sub, Process Pool, and Circuit Breaker
 - 📋 **Phase 3 Planned**: Functional programming patterns
 - 📋 **Phase 4 Planned**: Real-world production patterns
 
@@ -289,6 +288,7 @@ This is primarily a demonstration repository, but improvements are welcome:
 - [Registry & Dynamic Supervisors Guide](guides/05_registry_dynamic_supervisor.md)
 - [Pub/Sub with Registry Guide](guides/06_registry_pub_sub.md)
 - [Process Pooling Guide](guides/07_process_pool.md)
+- [Circuit Breaker Guide](guides/08_circuit_breaker.md)
 
 ---
 
