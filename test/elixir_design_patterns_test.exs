@@ -14,5 +14,6 @@ defmodule ElixirDesignPatternsTest do
     patterns = ElixirDesignPatterns.patterns()
 
     assert Patterns.Pipeline in patterns
+    assert Patterns.Railway in patterns
   end
 end

@@ -18,7 +18,8 @@ defmodule ElixirDesignPatterns do
       Patterns.RegistryPubSub,
       Patterns.ProcessPool,
       Patterns.CircuitBreaker,
-      Patterns.Pipeline
+      Patterns.Pipeline,
+      Patterns.Railway
     ]
   end
 end

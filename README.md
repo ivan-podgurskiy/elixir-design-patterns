@@ -63,11 +63,11 @@ iex -S mix
 | Pattern | Module | Description | Guide |
 |---------|--------|-------------|--------|
 | **Pipeline with `with`** | [`Patterns.Pipeline`](lib/patterns/pipeline.ex) | Step pipelines using `with` chains for linear happy paths and first-error short-circuiting | [📖 Guide](guides/09_pipeline_with.md) |
+| **Railway-Oriented Programming** | [`Patterns.Railway`](lib/patterns/railway.ex) | Pipe-friendly result combinators (`bind`, `map`, `tee`, `recover`) for two-track success/failure pipelines | [📖 Guide](guides/10_railway_oriented.md) |
 
 ### Coming Soon — Additional Phases
 
 **Phase 3 — Functional Patterns (remaining)**
-- Railway-oriented programming
 - Behaviour & Protocol systems
 - ETS-backed stores
 
@@ -101,6 +101,7 @@ iex -S mix
 
 ### 🧩 **Functional Composition**
 - **Pipeline with `with`**: Linear happy paths with first-error short-circuiting
+- **Railway-Oriented Programming**: Pipe-friendly combinators for two-track result flows
 
 ## Code Quality
 
@@ -278,7 +279,7 @@ This is primarily a demonstration repository, but improvements are welcome:
 
 - ✅ **Phase 1 Complete**: Core OTP patterns with full documentation
 - ✅ **Phase 2 Complete**: Registry & Dynamic Supervisors, Pub/Sub, Process Pool, and Circuit Breaker
-- 🚧 **Phase 3 In Progress**: Functional programming patterns (Pipeline with `with` chains)
+- 🚧 **Phase 3 In Progress**: Functional programming patterns (Pipeline with `with` chains, Railway-Oriented Programming)
 - 📋 **Phase 4 Planned**: Real-world production patterns
 
 ## Resources
@@ -298,6 +299,7 @@ This is primarily a demonstration repository, but improvements are welcome:
 - [Process Pooling Guide](guides/07_process_pool.md)
 - [Circuit Breaker Guide](guides/08_circuit_breaker.md)
 - [Pipeline with `with` Chains Guide](guides/09_pipeline_with.md)
+- [Railway-Oriented Programming Guide](guides/10_railway_oriented.md)
 
 ---
 

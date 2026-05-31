@@ -104,8 +104,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Malformed step return values wrapped instead of crashing
 - Comprehensive test suite (with doctests) and detailed guide
 
+### Added - Phase 3: Functional Patterns (Part 2)
+
+#### Railway-Oriented Programming Pattern
+- Result constructors (`ok/1`, `error/1`) and pipe-friendly combinators
+- `bind/2` for fallible steps and `map/2` for pure transformations
+- `map_error/2` for normalizing reasons on the failure track
+- `tee/2` and `tap_error/2` for track-specific side effects
+- `try_catch/2` to bring raising code onto the railway
+- `recover/2` to switch failures back to success, plus `unwrap/2` and `unwrap_with/2`
+- Comprehensive test suite (with doctests) and detailed guide
+
 ### Planned - Phase 3: Functional Patterns (remaining)
-- Railway-oriented programming for error handling
 - Behaviour and Protocol system demonstrations
 - ETS-backed storage patterns with performance comparisons
 
