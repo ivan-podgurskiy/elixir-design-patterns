@@ -17,7 +17,8 @@ defmodule ElixirDesignPatterns do
       Patterns.RegistryDynamicSupervisor,
       Patterns.RegistryPubSub,
       Patterns.ProcessPool,
-      Patterns.CircuitBreaker
+      Patterns.CircuitBreaker,
+      Patterns.Pipeline
     ]
   end
 end

@@ -58,10 +58,15 @@ iex -S mix
 | **Process Pooling** | [`Patterns.ProcessPool`](lib/patterns/process_pool.ex) | Fixed-size interchangeable worker pools with checkout/checkin | [📖 Guide](guides/07_process_pool.md) |
 | **Circuit Breaker** | [`Patterns.CircuitBreaker`](lib/patterns/circuit_breaker.ex) | Fail-fast protection for unreliable services with automatic recovery | [📖 Guide](guides/08_circuit_breaker.md) |
 
+### Phase 3 — Functional Patterns
+
+| Pattern | Module | Description | Guide |
+|---------|--------|-------------|--------|
+| **Pipeline with `with`** | [`Patterns.Pipeline`](lib/patterns/pipeline.ex) | Step pipelines using `with` chains for linear happy paths and first-error short-circuiting | [📖 Guide](guides/09_pipeline_with.md) |
+
 ### Coming Soon — Additional Phases
 
-**Phase 3 — Functional Patterns**
-- Pipeline with `with` chains
+**Phase 3 — Functional Patterns (remaining)**
 - Railway-oriented programming
 - Behaviour & Protocol systems
 - ETS-backed stores
@@ -93,6 +98,9 @@ iex -S mix
 - **Supervisor Tree**: "Let it crash" philosophy in practice
 - **GenServer Cache**: Graceful degradation and recovery
 - **Circuit Breaker**: Fail-fast protection against failing dependencies
+
+### 🧩 **Functional Composition**
+- **Pipeline with `with`**: Linear happy paths with first-error short-circuiting
 
 ## Code Quality
 
@@ -270,7 +278,7 @@ This is primarily a demonstration repository, but improvements are welcome:
 
 - ✅ **Phase 1 Complete**: Core OTP patterns with full documentation
 - ✅ **Phase 2 Complete**: Registry & Dynamic Supervisors, Pub/Sub, Process Pool, and Circuit Breaker
-- 📋 **Phase 3 Planned**: Functional programming patterns
+- 🚧 **Phase 3 In Progress**: Functional programming patterns (Pipeline with `with` chains)
 - 📋 **Phase 4 Planned**: Real-world production patterns
 
 ## Resources
@@ -289,6 +297,7 @@ This is primarily a demonstration repository, but improvements are welcome:
 - [Pub/Sub with Registry Guide](guides/06_registry_pub_sub.md)
 - [Process Pooling Guide](guides/07_process_pool.md)
 - [Circuit Breaker Guide](guides/08_circuit_breaker.md)
+- [Pipeline with `with` Chains Guide](guides/09_pipeline_with.md)
 
 ---
 

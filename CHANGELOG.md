@@ -94,8 +94,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Manual `trip/1` and `reset/1` controls plus `state/1` and `stats/1` introspection
 - Comprehensive test suite and detailed guide
 
-### Planned - Phase 3: Functional Patterns
-- Pipeline processing with `with` statement chains
+### Added - Phase 3: Functional Patterns (Part 1)
+
+#### Pipeline with `with` Chains Pattern
+- Concrete `with` chain (`register_user/1`) for sequential validation and normalization
+- Error normalization via the `with` `else` clause (`register_user_normalized/1`)
+- Generic data-driven step runner (`run/2`) with first-error short-circuiting
+- Tagged step runner (`run_tagged/2`) that retains which step failed
+- Malformed step return values wrapped instead of crashing
+- Comprehensive test suite (with doctests) and detailed guide
+
+### Planned - Phase 3: Functional Patterns (remaining)
 - Railway-oriented programming for error handling
 - Behaviour and Protocol system demonstrations
 - ETS-backed storage patterns with performance comparisons

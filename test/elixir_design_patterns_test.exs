@@ -9,4 +9,10 @@ defmodule ElixirDesignPatternsTest do
     assert Patterns.AgentState in patterns
     assert Patterns.TaskAsync in patterns
   end
+
+  test "lists phase 3 patterns" do
+    patterns = ElixirDesignPatterns.patterns()
+
+    assert Patterns.Pipeline in patterns
+  end
 end
