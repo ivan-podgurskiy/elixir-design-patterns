@@ -115,8 +115,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `recover/2` to switch failures back to success, plus `unwrap/2` and `unwrap_with/2`
 - Comprehensive test suite (with doctests) and detailed guide
 
+### Added - Phase 3: Functional Patterns (Part 3)
+
+#### Behaviour & Protocol Systems Pattern
+- `Notification` protocol with `@fallback_to_any` for value-dispatched message rendering
+- Protocol implementations for `Alert`/`Deploy` structs, `BitString`, and `Any`
+- `Channel` behaviour with a required `deliver/2` callback and optional `name/0`
+- `ConsoleChannel`, `CollectorChannel`, and `FailingChannel` implementations
+- `notify/3` composing protocol rendering with behaviour-based delivery
+- Runtime contract checking (`delivery_channel?/1`) and `channel_name/1` fallback
+- Comprehensive test suite (with doctests) and detailed guide
+
 ### Planned - Phase 3: Functional Patterns (remaining)
-- Behaviour and Protocol system demonstrations
 - ETS-backed storage patterns with performance comparisons
 
 ### Planned - Phase 4: Real-World Patterns
