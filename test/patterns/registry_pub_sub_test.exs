@@ -130,14 +130,35 @@ defmodule Patterns.RegistryPubSubTest do
       Process.exit(subscriber, :kill)
       assert_receive {:DOWN, ^ref, :process, ^subscriber, :killed}
 
-      assert RegistryPubSub.subscriber_count(supervisor, "volatile") == 0
-      assert RegistryPubSub.topics(supervisor) == []
+      # Registry unregistration is asynchronous after process exit.
+      assert_eventually(fn ->
+        if RegistryPubSub.subscriber_count(supervisor, "volatile") == 0 and
+             RegistryPubSub.topics(supervisor) == [] do
+          :ok
+        else
+          {:error, :not_unregistered}
+        end
+      end)
     end
   end
 
   defp stop_supervisor(supervisor) do
     if Process.alive?(supervisor) do
       Supervisor.stop(supervisor, :normal, 5000)
+    end
+  end
+
+  defp assert_eventually(fun, attempts \\ 20) do
+    case fun.() do
+      :ok ->
+        :ok
+
+      _ when attempts > 0 ->
+        Process.sleep(50)
+        assert_eventually(fun, attempts - 1)
+
+      result ->
+        flunk("condition not met: #{inspect(result)}")
     end
   end
 end
