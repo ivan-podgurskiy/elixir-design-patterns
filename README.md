@@ -65,11 +65,9 @@ iex -S mix
 | **Pipeline with `with`** | [`Patterns.Pipeline`](lib/patterns/pipeline.ex) | Step pipelines using `with` chains for linear happy paths and first-error short-circuiting | [📖 Guide](guides/09_pipeline_with.md) |
 | **Railway-Oriented Programming** | [`Patterns.Railway`](lib/patterns/railway.ex) | Pipe-friendly result combinators (`bind`, `map`, `tee`, `recover`) for two-track success/failure pipelines | [📖 Guide](guides/10_railway_oriented.md) |
 | **Behaviour & Protocol** | [`Patterns.BehaviourProtocol`](lib/patterns/behaviour_protocol.ex) | Module-dispatched behaviours vs. value-dispatched protocols, wired into one notification system | [📖 Guide](guides/11_behaviour_protocol.md) |
+| **ETS-Backed Store** | [`Patterns.EtsStore`](lib/patterns/ets_store.ex) | GenServer-owned `:public` ETS tables with direct reads and read-path benchmarks | [📖 Guide](guides/12_ets_store.md) |
 
 ### Coming Soon — Additional Phases
-
-**Phase 3 — Functional Patterns (remaining)**
-- ETS-backed stores
 
 **Phase 4 — Real-World Patterns**
 - Rate Limiter with token bucket
@@ -82,6 +80,7 @@ iex -S mix
 ### 🔧 **State Management**
 - **GenServer Cache**: Production-ready caching with expiration
 - **Agent State**: Lightweight shared state for simple scenarios
+- **ETS-Backed Store**: Shared in-memory tables with optional read bypass
 
 ### 🚦 **Process Supervision**
 - **Supervisor Tree**: Fault tolerance with configurable restart strategies
@@ -298,7 +297,7 @@ Renovate opens weekly update PRs (security updates are prioritized immediately).
 
 - ✅ **Phase 1 Complete**: Core OTP patterns with full documentation
 - ✅ **Phase 2 Complete**: Registry & Dynamic Supervisors, Pub/Sub, Process Pool, and Circuit Breaker
-- 🚧 **Phase 3 In Progress**: Functional programming patterns (Pipeline with `with` chains, Railway-Oriented Programming, Behaviour & Protocol systems)
+- ✅ **Phase 3 Complete**: Functional programming patterns (Pipeline, Railway, Behaviour & Protocol, ETS-backed stores)
 - 📋 **Phase 4 Planned**: Real-world production patterns
 
 ## Resources
@@ -320,6 +319,7 @@ Renovate opens weekly update PRs (security updates are prioritized immediately).
 - [Pipeline with `with` Chains Guide](guides/09_pipeline_with.md)
 - [Railway-Oriented Programming Guide](guides/10_railway_oriented.md)
 - [Behaviour & Protocol Systems Guide](guides/11_behaviour_protocol.md)
+- [ETS-Backed Stores Guide](guides/12_ets_store.md)
 
 ---
 

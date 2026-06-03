@@ -126,8 +126,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Runtime contract checking (`delivery_channel?/1`) and `channel_name/1` fallback
 - Comprehensive test suite (with doctests) and detailed guide
 
-### Planned - Phase 3: Functional Patterns (remaining)
-- ETS-backed storage patterns with performance comparisons
+### Added - Phase 3: Functional Patterns (Part 4)
+
+#### ETS-Backed Store Pattern
+- GenServer-owned `:public, :protected` ETS tables with configurable `:set` / `:bag` types
+- `put/3`, `get/2`, `delete/2`, `clear/1`, `member?/2`, and `stats/1`
+- `fetch/2` for direct `:ets.lookup/2` reads without messaging the owner
+- `compare_reads/2` micro-benchmark contrasting GenServer reads vs direct ETS access
+- `read_concurrency` and `write_concurrency` options on table creation
+- Comprehensive test suite (with doctests) and detailed guide
 
 ### Planned - Phase 4: Real-World Patterns
 - Rate limiter using token bucket algorithm
