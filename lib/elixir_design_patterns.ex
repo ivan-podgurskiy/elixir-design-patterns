@@ -19,7 +19,9 @@ defmodule ElixirDesignPatterns do
       Patterns.ProcessPool,
       Patterns.CircuitBreaker,
       Patterns.Pipeline,
-      Patterns.Railway
+      Patterns.Railway,
+      Patterns.BehaviourProtocol,
+      Patterns.EtsStore
     ]
   end
 end

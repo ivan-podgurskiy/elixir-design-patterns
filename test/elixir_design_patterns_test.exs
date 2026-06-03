@@ -15,5 +15,7 @@ defmodule ElixirDesignPatternsTest do
 
     assert Patterns.Pipeline in patterns
     assert Patterns.Railway in patterns
+    assert Patterns.BehaviourProtocol in patterns
+    assert Patterns.EtsStore in patterns
   end
 end
