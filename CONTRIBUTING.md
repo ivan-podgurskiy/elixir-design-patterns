@@ -4,7 +4,7 @@ Thank you for improving this repository. Bug reports, documentation fixes, and w
 
 ## Conventional Commits
 
-This project uses [Conventional Commits](https://www.conventionalcommits.org/) for changelog generation (release-please) and consistent dependency update messages (Renovate `semanticCommits`).
+This project uses [Conventional Commits](https://www.conventionalcommits.org/) for consistent dependency update messages (Renovate `semanticCommits`) and clear commit history.
 
 Use these prefixes in commit titles:
 
