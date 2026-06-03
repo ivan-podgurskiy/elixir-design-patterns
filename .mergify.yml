@@ -1,0 +1,36 @@
+queue_rules:
+  - name: default
+    queue_conditions:
+      - "#approved-reviews-by>=1"
+      - "#changes-requested-reviews-by=0"
+      - "check-success=Test (Elixir 1.19.5 / OTP 28.1)"
+      - "check-success=Test (Elixir 1.19.5 / OTP 26.2.5)"
+      - "check-success=Dialyzer"
+      - "check-success=Coverage"
+      - "-draft"
+    merge_conditions:
+      - "#approved-reviews-by>=1"
+      - "#changes-requested-reviews-by=0"
+      - "check-success=Test (Elixir 1.19.5 / OTP 28.1)"
+      - "check-success=Test (Elixir 1.19.5 / OTP 26.2.5)"
+      - "check-success=Dialyzer"
+      - "check-success=Coverage"
+      - "-draft"
+    merge_method: squash
+
+pull_request_rules:
+  - name: queue approved pull requests
+    conditions:
+      - "#approved-reviews-by>=1"
+      - "#changes-requested-reviews-by=0"
+      - "check-success=Test (Elixir 1.19.5 / OTP 28.1)"
+      - "check-success=Test (Elixir 1.19.5 / OTP 26.2.5)"
+      - "check-success=Dialyzer"
+      - "check-success=Coverage"
+      - "-draft"
+      - "-closed"
+      - "-conflict"
+    actions:
+      queue:
+        name: default
+      delete_head_branch:

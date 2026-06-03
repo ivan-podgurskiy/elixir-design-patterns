@@ -278,6 +278,22 @@ This is primarily a demonstration repository, but improvements are welcome:
 3. **Performance**: Benchmarks and optimizations
 4. **Examples**: Additional real-world usage scenarios
 
+See [CONTRIBUTING.md](CONTRIBUTING.md) for commit message conventions (Conventional Commits) and PR workflow.
+
+## Security & Dependencies
+
+### Dependabot alerts (security only)
+
+This repository uses **Renovate** for dependency version updates. **Dependabot** is used only for vulnerability detection — not for opening version-update PRs.
+
+Enable Dependabot alerts manually in GitHub:
+
+1. Open **Settings → Code security and analysis**
+2. Enable **Dependabot alerts**
+3. If **Dependabot security updates** or **Dependabot version updates** are enabled, disable version updates (Renovate handles those)
+
+Renovate opens weekly update PRs (security updates are prioritized immediately). All dependency PRs require manual review and approval before merge.
+
 ## Project Status
 
 - ✅ **Phase 1 Complete**: Core OTP patterns with full documentation
