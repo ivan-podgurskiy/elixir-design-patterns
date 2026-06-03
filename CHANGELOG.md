@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 1.0.0 (2026-06-03)
+
+
+### Features
+
+* add ETS-backed store pattern (Phase 3 complete) ([5be20a1](https://github.com/ivan-podgurskiy/elixir-design-patterns/commit/5be20a1222eea1d2767fcabdf3a3249f87c6101e))
+
 ## [1.0.0] - 2024-11-15
 
 ### Added - Phase 1: Core OTP Patterns
