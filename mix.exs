@@ -37,6 +37,7 @@ defmodule ElixirDesignPatterns.MixProject do
     [
       preferred_envs: [
         coveralls: :test,
+        "coveralls.cobertura": :test,
         "coveralls.detail": :test,
         "coveralls.post": :test,
         "coveralls.html": :test
