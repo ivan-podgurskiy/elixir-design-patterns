@@ -155,15 +155,27 @@ defmodule Patterns.TaskAsync do
 
   @doc """
   Retry a task with exponential backoff.
+
+  Delay between attempts uses the [`jitter`](https://hexdocs.pm/jitter) package,
+  which implements the strategies from Marc Brooker's
+  [Exponential Backoff and Jitter](https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/).
+
+  ## Options
+
+  - `:max_attempts` — total tries (default: `3`)
+  - `:base_delay` — base delay in milliseconds (default: `100`)
+  - `:max_delay` — cap on delay in milliseconds (default: `5000`)
+  - `:jitter` — `:full` (default), `:equal`, `:decorrelated`, or `false` for no jitter.
+    `true` is accepted as an alias for `:full`.
   """
   @spec retry((-> term()), keyword()) :: {:ok, term()} | {:error, Exception.t()}
   def retry(fun, opts \\ []) do
     max_attempts = Keyword.get(opts, :max_attempts, 3)
     base_delay = Keyword.get(opts, :base_delay, 100)
     max_delay = Keyword.get(opts, :max_delay, 5000)
-    jitter = Keyword.get(opts, :jitter, true)
+    jitter = normalize_jitter(Keyword.get(opts, :jitter, :full))
 
-    do_retry(fun, max_attempts, base_delay, max_delay, jitter, 1)
+    do_retry(fun, max_attempts, base_delay, max_delay, jitter, 1, base_delay)
   end
 
   @doc """
@@ -261,39 +273,57 @@ defmodule Patterns.TaskAsync do
     end
   end
 
+  @type jitter_strategy :: false | :full | :equal | :decorrelated
+
+  @spec normalize_jitter(boolean() | jitter_strategy()) :: jitter_strategy()
+  defp normalize_jitter(true), do: :full
+  defp normalize_jitter(false), do: false
+  defp normalize_jitter(strategy) when strategy in [:full, :equal, :decorrelated], do: strategy
+
   @spec do_retry(
           (-> term()),
           pos_integer(),
           pos_integer(),
           pos_integer(),
-          boolean(),
+          jitter_strategy(),
+          pos_integer(),
           pos_integer()
         ) :: {:ok, term()} | {:error, term()}
-  defp do_retry(fun, max_attempts, base_delay, max_delay, jitter, attempt) do
+  defp do_retry(fun, max_attempts, base_delay, max_delay, jitter, attempt, prev_delay) do
     result = fun.()
     {:ok, result}
   rescue
     e ->
       if attempt < max_attempts do
-        delay = calculate_backoff_delay(base_delay, max_delay, jitter, attempt)
+        delay = backoff_delay(jitter, attempt, base_delay, max_delay, prev_delay)
         Process.sleep(delay)
-        do_retry(fun, max_attempts, base_delay, max_delay, jitter, attempt + 1)
+        do_retry(fun, max_attempts, base_delay, max_delay, jitter, attempt + 1, delay)
       else
         {:error, e}
       end
   end
 
-  @spec calculate_backoff_delay(pos_integer(), pos_integer(), boolean(), pos_integer()) ::
+  @spec backoff_delay(
+          jitter_strategy(),
+          pos_integer(),
+          pos_integer(),
+          pos_integer(),
           pos_integer()
-  defp calculate_backoff_delay(base_delay, max_delay, jitter, attempt) do
-    delay = min(base_delay * :math.pow(2, attempt - 1), max_delay)
+        ) :: pos_integer()
+  defp backoff_delay(false, attempt, base_delay, max_delay, _prev_delay) do
+    Jitter.no_jitter(attempt - 1, base: base_delay, cap: max_delay)
+  end
 
-    if jitter do
-      jitter_amount = trunc(delay * 0.1)
-      trunc(delay + (:rand.uniform() - 0.5) * jitter_amount)
-    else
-      trunc(delay)
-    end
+  defp backoff_delay(:full, attempt, base_delay, max_delay, _prev_delay) do
+    Jitter.full(attempt - 1, base: base_delay, cap: max_delay)
+  end
+
+  defp backoff_delay(:equal, attempt, base_delay, max_delay, _prev_delay) do
+    Jitter.equal(attempt - 1, base: base_delay, cap: max_delay)
+  end
+
+  defp backoff_delay(:decorrelated, _attempt, base_delay, max_delay, prev_delay) do
+    Jitter.decorrelated(prev_delay, base: base_delay, cap: max_delay)
   end
 
   defmodule Utils do

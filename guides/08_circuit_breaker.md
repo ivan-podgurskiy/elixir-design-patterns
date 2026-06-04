@@ -228,7 +228,7 @@ When the breaker is open, return a degraded-but-functional response (cached data
 | **Process Pool** | Bound concurrency to a resource |
 | **Bulkhead** | Isolate failures to a subset of resources |
 
-Circuit breakers pair well with retries (retry within closed state) and fallbacks (serve alternatives when open).
+Circuit breakers pair well with retries (retry within closed state) and fallbacks (serve alternatives when open). For retry delays, see [Task.async — Retry with Backoff](04_task_async.md#retry-with-backoff) and the [`jitter`](https://hexdocs.pm/jitter) package.
 
 ## Supervision Considerations
 

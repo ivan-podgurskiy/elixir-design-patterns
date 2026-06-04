@@ -132,30 +132,40 @@ large_dataset
 
 ### Retry with Backoff
 
+`Patterns.TaskAsync.retry/2` uses the [`jitter`](https://hexdocs.pm/jitter) package for
+exponential backoff. Full jitter (`:full`) is the recommended default; pass
+`:decorrelated` when many clients retry the same resource at once.
+
 ```elixir
-def retry_with_backoff(fun, opts \\ []) do
-  max_attempts = Keyword.get(opts, :max_attempts, 3)
-  base_delay = Keyword.get(opts, :base_delay, 100)
+# Built-in retry with full jitter (default)
+{:ok, result} =
+  Patterns.TaskAsync.retry(fn -> flaky_api_call() end,
+    max_attempts: 5,
+    base_delay: 100,
+    max_delay: 30_000,
+    jitter: :full
+  )
 
-  Enum.reduce_while(1..max_attempts, nil, fn attempt, _acc ->
-    task = Task.async(fn ->
-      try do
-        {:ok, fun.()}
-      rescue
-        e -> {:error, e}
-      end
-    end)
+# Deterministic delays for tests
+Patterns.TaskAsync.retry(fn -> raise "fail" end,
+  max_attempts: 3,
+  base_delay: 50,
+  jitter: false
+)
+```
 
-    case Task.await(task, 10_000) do
-      {:ok, result} -> {:halt, {:ok, result}}
-      {:error, _} when attempt < max_attempts ->
-        delay = base_delay * :math.pow(2, attempt - 1)
-        Process.sleep(trunc(delay))
-        {:cont, nil}
-      {:error, reason} -> {:halt, {:error, reason}}
-    end
-  end)
-end
+For a custom pipeline, compose [`Jitter`](https://hexdocs.pm/jitter/Jitter.html)
+directly:
+
+```elixir
+# Single delay after attempt 2 (0-indexed)
+Jitter.full(2, base: 100, cap: 30_000)
+
+# Or precompute delays for a manual retry loop
+delays =
+  Jitter.full_stream(base: 100, cap: 30_000)
+  |> Stream.take(max_attempts - 1)
+  |> Enum.to_list()
 ```
 
 ### Pipeline Processing
