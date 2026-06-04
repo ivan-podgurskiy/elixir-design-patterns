@@ -78,15 +78,31 @@ defmodule Patterns.RegistryDynamicSupervisor do
   @spec stop_worker(Supervisor.supervisor(), worker_key()) ::
           :ok | {:error, :not_found | term()}
   def stop_worker(supervisor, key) do
-    %{registry: registry} = components(supervisor)
+    %{registry: registry, dynamic: dynamic} = components(supervisor)
 
     case Registry.lookup(registry, key) do
       [{pid, _}] ->
-        GenServer.stop(pid)
-        :ok
+        with :ok <- DynamicSupervisor.terminate_child(dynamic, pid),
+             :ok <- wait_until_unregistered(registry, key) do
+          :ok
+        end
 
       [] ->
         {:error, :not_found}
+    end
+  end
+
+  defp wait_until_unregistered(registry, key, attempts \\ 100) do
+    case Registry.lookup(registry, key) do
+      [] ->
+        :ok
+
+      _ when attempts > 0 ->
+        Process.sleep(5)
+        wait_until_unregistered(registry, key, attempts - 1)
+
+      _ ->
+        {:error, :timeout}
     end
   end
 
