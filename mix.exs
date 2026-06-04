@@ -54,6 +54,8 @@ defmodule ElixirDesignPatterns.MixProject do
 
   defp deps do
     [
+      {:jitter, "~> 0.1"},
+
       # Development and testing
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
