@@ -136,8 +136,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `read_concurrency` and `write_concurrency` options on table creation
 - Comprehensive test suite (with doctests) and detailed guide
 
-### Planned - Phase 4: Real-World Patterns
-- Rate limiter using token bucket algorithm
+### Added - Phase 4: Real-World Patterns (Part 1)
+
+#### Rate Limiter (Token Bucket) Pattern
+- Continuous token bucket with lazy refill via monotonic time
+- Global and per-key limiting modes
+- `allow/1`, `allow/2`, `consume/2`, and `consume/3` APIs with variable token cost
+- `{:error, :rate_limited, retry_after_ms}` for client-friendly backoff hints
+- `stats/1`, `reset/1`, and `reset/2` introspection and manual reset
+- Comprehensive test suite and detailed guide
+
+### Planned - Phase 4: Real-World Patterns (remaining)
 - Retry patterns with jitter and backoff strategies
 - Graceful shutdown handling for production systems
 - Event sourcing fundamentals with projections
