@@ -67,11 +67,14 @@ iex -S mix
 | **Behaviour & Protocol** | [`Patterns.BehaviourProtocol`](lib/patterns/behaviour_protocol.ex) | Module-dispatched behaviours vs. value-dispatched protocols, wired into one notification system | [📖 Guide](guides/11_behaviour_protocol.md) |
 | **ETS-Backed Store** | [`Patterns.EtsStore`](lib/patterns/ets_store.ex) | GenServer-owned `:public` ETS tables with direct reads and read-path benchmarks | [📖 Guide](guides/12_ets_store.md) |
 
-### Coming Soon — Additional Phases
+### Phase 4 — Real-World Patterns
 
-**Phase 4 — Real-World Patterns**
-- Rate Limiter with token bucket
-- Retry with exponential backoff
+| Pattern | Module | Description | Guide |
+|---------|--------|-------------|--------|
+| **Rate Limiter** | [`Patterns.RateLimiter`](lib/patterns/rate_limiter.ex) | Token bucket rate limiting with global and per-key buckets, lazy refill, and retry hints | [📖 Guide](guides/13_rate_limiter.md) |
+
+**Coming Soon**
+- Retry with exponential backoff (standalone module)
 - Graceful shutdown handling
 - Event Sourcing fundamentals
 
@@ -298,7 +301,7 @@ Renovate opens weekly update PRs (security updates are prioritized immediately).
 - ✅ **Phase 1 Complete**: Core OTP patterns with full documentation
 - ✅ **Phase 2 Complete**: Registry & Dynamic Supervisors, Pub/Sub, Process Pool, and Circuit Breaker
 - ✅ **Phase 3 Complete**: Functional programming patterns (Pipeline, Railway, Behaviour & Protocol, ETS-backed stores)
-- 📋 **Phase 4 Planned**: Real-world production patterns
+- 🚧 **Phase 4 In Progress**: Rate Limiter complete; retries, graceful shutdown, and event sourcing planned
 
 ## Resources
 
@@ -320,6 +323,7 @@ Renovate opens weekly update PRs (security updates are prioritized immediately).
 - [Railway-Oriented Programming Guide](guides/10_railway_oriented.md)
 - [Behaviour & Protocol Systems Guide](guides/11_behaviour_protocol.md)
 - [ETS-Backed Stores Guide](guides/12_ets_store.md)
+- [Rate Limiter Guide](guides/13_rate_limiter.md)
 
 ---
 

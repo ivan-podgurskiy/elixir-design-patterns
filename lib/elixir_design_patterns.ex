@@ -21,7 +21,8 @@ defmodule ElixirDesignPatterns do
       Patterns.Pipeline,
       Patterns.Railway,
       Patterns.BehaviourProtocol,
-      Patterns.EtsStore
+      Patterns.EtsStore,
+      Patterns.RateLimiter
     ]
   end
 end

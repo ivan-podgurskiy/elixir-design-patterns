@@ -137,4 +137,4 @@ Fourth and final pattern in **Phase 3 — Functional Patterns**:
 - ✅ Behaviour & Protocol systems
 - ✅ ETS-backed stores
 
-**Phase 4 — Real-World Patterns** is next: rate limiting, retries, graceful shutdown, and event sourcing fundamentals.
+**Phase 4 — Real-World Patterns** has started with the [Rate Limiter](13_rate_limiter.md). Still planned: retries, graceful shutdown, and event sourcing fundamentals.
